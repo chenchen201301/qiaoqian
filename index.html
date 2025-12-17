@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>喜迁新居 | 乔迁庆典</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Microsoft YaHei', 'SimHei', sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #FFF5F5 0%, #FFF0F0 100%);
+            color: #8B0000;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        /* 装饰元素 */
+        .decoration {
+            position: fixed;
+            z-index: -1;
+            opacity: 0.1;
+            font-size: 2rem;
+        }
+        
+        .decoration.fu {
+            top: 10%;
+            left: 5%;
+            transform: rotate(-15deg);
+        }
+        
+        .decoration.xi {
+            top: 15%;
+            right: 8%;
+            transform: rotate(20deg);
+        }
+        
+        /* 头部横幅 */
+        .banner {
+            background: linear-gradient(45deg, #FF3333, #FF6666);
+            color: #FFFAFA;
+            text-align: center;
+            padding: 2rem 1rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .banner::before, .banner::after {
+            content: "🏮";
+            position: absolute;
+            font-size: 2.5rem;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .banner::before {
+            left: 2rem;
+        }
+        
+        .banner::after {
+            right: 2rem;
+        }
+        
+        .main-title {
+            font-size: 3rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            margin-bottom: 0.5rem;
+        }
+        
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+        
+        /* 主要内容区域 */
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .welcome-section {
+            background: #FFFAFA;
+            border: 3px solid #FF3333;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(255, 0, 0, 0.1);
+            text-align: center;
+        }
+        
+        .welcome-section h2 {
+            color: #B22222;
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px dashed #FF6666;
+            padding-bottom: 0.5rem;
+        }
+        
+        .highlight {
+            color: #FF3333;
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+        
+        /* 活动详情卡片 */
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .detail-card {
+            background: white;
+            border-radius: 15px;
+            padding: 1.5rem;
+            box-shadow: 0 3px 10px rgba(255, 0, 0, 0.1);
+            border-top: 5px solid #FF3333;
+        }
+        
+        .detail-card h3 {
+            color: #B22222;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* 倒计时 */
+        .countdown {
+            background: linear-gradient(135deg, #FF3333, #FF6666);
+            color: white;
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+            margin: 2rem 0;
+        }
+        
+        .countdown-timer {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .time-unit {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 1rem;
+            border-radius: 10px;
+            min-width: 80px;
+        }
+        
+        .time-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+        }
+        
+        /* 地图区域 */
+        .map-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 2px solid #FF6666;
+        }
+        
+        .map-placeholder {
+            background: #F5F5F5;
+            border-radius: 10px;
+            padding: 3rem 1rem;
+            text-align: center;
+            color: #666;
+            margin-top: 1rem;
+        }
+        
+        /* 祝福区域 */
+        .blessing-section {
+            background: #FFF5F5;
+            border-radius: 15px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .blessing-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #FF9999;
+            border-radius: 10px;
+            font-size: 1rem;
+            margin: 1rem 0;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            background: linear-gradient(45deg, #FF3333, #FF6666);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 25px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .submit-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .blessings-list {
+            margin-top: 2rem;
+        }
+        
+        .blessing-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 0.5rem 0;
+            border-left: 4px solid #FF3333;
+        }
+        
+        /* 页脚 */
+        .footer {
+            background: #8B0000;
+            color: #FFD700;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .main-title {
+                font-size: 2.2rem;
+            }
+            
+            .countdown-timer {
+                flex-wrap: wrap;
+                gap: 0.8rem;
+            }
+            
+            .time-unit {
+                min-width: 70px;
+                padding: 0.8rem;
+            }
+            
+            .time-number {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 装饰元素 -->
+    <div class="decoration fu">福</div>
+    <div class="decoration xi">囍</div>
+    
+    <!-- 横幅区域 -->
+    <header class="banner">
+        <h1 class="main-title">🎉 喜迁新居 · 福满家门 🎉</h1>
+        <p class="subtitle">诚挚邀请您共同分享乔迁之喜</p>
+    </header>
+    
+    <div class="container">
+        <!-- 欢迎语 -->
+        <section class="welcome-section">
+            <h2>🏡 欢迎光临新居庆典 🏡</h2>
+            <p style="font-size: 1.2rem; line-height: 1.8; margin: 1rem 0;">
+                感谢您百忙之中拨冗前来！<br>
+                新居落成，喜气盈门，愿与亲朋好友共享这份<span class="highlight">喜悦与福气</span>。<br>
+                美酒佳肴已备，恭候您的光临！
+            </p>
+        </section>
+        
+        <!-- 活动详情 -->
+        <div class="details-grid">
+            <div class="detail-card">
+                <h3>📅 活动时间</h3>
+                <p><strong>2025年12月17日（星期三）</strong></p>
+                <p>⏰ 上午 9:00 - 晚上 8:00</p>
+            </div>
+            
+            <div class="detail-card">
+                <h3>📍 活动地点</h3>
+                <p><strong> 14号楼 3单元 1102室</strong></p>
+                <p>🏘️ 韶关市曲江区马坝镇状元府邸1期</p>
+            </div>
+            
+            <div class="detail-card">
+                <h3>📞 联系方式</h3>
+                <p>👨‍👩‍👧 主人：莫先生 & 杨女士</p>
+                <p>📱 电话：136-8008-2027</p>
+            </div>
+        </div>
+        
+        <!-- 倒计时 -->
+        <section class="countdown">
+            <h2 style="color: white; margin-bottom: 1rem;">⏳ 活动倒计时</h2>
+            <div class="countdown-timer">
+                <div class="time-unit">
+                    <div class="time-number" id="days">00</div>
+                    <div>天</div>
+                </div>
+                <div class="time-unit">
+                    <div class="time-number" id="hours">00</div>
+                    <div>小时</div>
+                </div>
+                <div class="time-unit">
+                    <div class="time-number" id="minutes">00</div>
+                    <div>分钟</div>
+                </div>
+                <div class="time-unit">
+                    <div class="time-number" id="seconds">00</div>
+                    <div>秒</div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 地图指引 -->
+        <section class="map-section">
+            <h2>🗺️ 位置指引</h2>
+            <div class="map-placeholder">
+                <p style="font-size: 1.2rem; margin-bottom: 1rem;">📍 地图位置展示</p>
+                <p>🚗 地址：状元府邸1期14栋3单元1102</p>
+            </div>
+        </section>
+        
+        <!-- 祝福留言 -->
+        <section class="blessing-section">
+            <h2>💌 送上您的祝福</h2>
+            <p>留下您对新居的祝福，我们将珍藏这份情谊</p>
+            
+            <textarea 
+                class="blessing-input" 
+                rows="4" 
+                placeholder="写下您的祝福语..." 
+                id="blessingInput"
+            ></textarea>
+            
+            <div style="text-align: center;">
+                <button class="submit-btn" onclick="submitBlessing()">发送祝福</button>
+            </div>
+            
+            <div class="blessings-list" id="blessingsList">
+                <div class="blessing-item">
+                    <strong>杨阿姨：</strong> 恭喜乔迁之喜！新居新气象，福气满堂！
+                </div>
+                <div class="blessing-item">
+                    <strong>莫叔叔：</strong> 愿新家带给你们无尽的欢乐和温馨！
+                </div>
+            </div>
+        </section>
+    </div>
+    
+    <!-- 页脚 -->
+    <footer class="footer">
+        <h3>🎊 恭候您的光临 🎊</h3>
+        <p>让我们共同见证这个温馨的时刻</p>
+        
+        <div class="contact-info">
+            <div class="contact-item">📧 346475519@qq.com</div>
+            <div class="contact-item">📱 136-8008-2027</div>
+        </div>
+        
+        <p style="margin-top: 2rem; font-size: 0.9rem; opacity: 0.8;">
+            © 2025 莫家乔迁庆典 | 感谢每一位亲友的祝福
+        </p>
+    </footer>
+    
+    <script>
+        // 倒计时功能
+        function updateCountdown() {
+            const targetDate = new Date('2024-12-28T11:00:00').getTime();
+            const now = new Date().getTime();
+            const timeLeft = targetDate - now;
+            
+            if (timeLeft < 0) {
+                document.getElementById('days').textContent = '00';
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
+                return;
+            }
+            
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((timeLeft % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+            
+            document.getElementById('days').textContent = days.toString().padStart(2, '0');
+            document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+        }
+        
+        // 祝福提交功能
+        function submitBlessing() {
+            const input = document.getElementById('blessingInput');
+            const blessingText = input.value.trim();
+            
+            if (!blessingText) {
+                alert('请输入祝福语！');
+                return;
+            }
+            
+            if (blessingText.length < 3) {
+                alert('祝福语太短了，请至少输入3个字！');
+                return;
+            }
+            
+            const blessingsList = document.getElementById('blessingsList');
+            const newBlessing = document.createElement('div');
+            newBlessing.className = 'blessing-item';
+            
+            // 这里可以替换为实际发送者的名字
+            const sender = '您的好友';
+            newBlessing.innerHTML = `<strong>${sender}：</strong> ${blessingText}`;
+            
+            blessingsList.insertBefore(newBlessing, blessingsList.firstChild);
+            input.value = '';
+            
+            // 显示成功消息
+            alert('感谢您的祝福！已成功提交。');
+            
+            // 模拟保存到本地存储
+            try {
+                const savedBlessings = JSON.parse(localStorage.getItem('housewarmingBlessings') || '[]');
+                savedBlessings.unshift({
+                    sender: sender,
+                    text: blessingText,
+                    time: new Date().toLocaleString('zh-CN')
+                });
+                localStorage.setItem('housewarmingBlessings', JSON.stringify(savedBlessings.slice(0, 20)));
+            } catch (e) {
+                console.log('本地存储不可用');
+            }
+        }
+        
+        // 页面加载时加载已保存的祝福
+        function loadSavedBlessings() {
+            try {
+                const savedBlessings = JSON.parse(localStorage.getItem('housewarmingBlessings') || '[]');
+                const blessingsList = document.getElementById('blessingsList');
+                
+                // 先清空示例祝福
+                blessingsList.innerHTML = '';
+                
+                savedBlessings.forEach(blessing => {
+                    const blessingItem = document.createElement('div');
+                    blessingItem.className = 'blessing-item';
+                    blessingItem.innerHTML = `<strong>${blessing.sender}：</strong> ${blessing.text} 
+                    <div style="font-size:0.8em; color:#666; margin-top:5px;">${blessing.time}</div>`;
+                    blessingsList.appendChild(blessingItem);
+                });
+                
+                // 如果没有保存的祝福，显示示例
+                if (savedBlessings.length === 0) {
+                    blessingsList.innerHTML = `
+                        <div class="blessing-item">
+                            <strong>杨阿姨：</strong> 恭喜乔迁之喜！新居新气象，福气满堂！
+                        </div>
+                        <div class="blessing-item">
+                            <strong>莫叔叔：</strong> 愿新家带给你们无尽的欢乐和温馨！
+                        </div>
+                    `;
+                }
+            } catch (e) {
+                console.log('无法加载已保存的祝福');
+            }
+        }
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            // 启动倒计时
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+            
+            // 加载已保存的祝福
+            loadSavedBlessings();
+            
+            // 为输入框添加回车提交功能
+            document.getElementById('blessingInput').addEventListener('keypress', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    submitBlessing();
+                }
+            });
+            
+            // 添加一些动画效果
+            const cards = document.querySelectorAll('.detail-card, .welcome-section');
+            cards.forEach((card, index) => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                
+                setTimeout(() => {
+                    card.style.opacity = '1';
+                    card.style.transform = 'translateY(0)';
+                }, 100 + index * 100);
+            });
+        });
+    </script>
+</body>
+</html>
